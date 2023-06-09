@@ -1,7 +1,7 @@
 ---
 title: Rust
 created: '2023-06-09T17:33:40.303Z'
-modified: '2023-06-09T18:37:36.977Z'
+modified: '2023-06-09T20:42:25.960Z'
 ---
 
 # Rust
@@ -32,5 +32,18 @@ modified: '2023-06-09T18:37:36.977Z'
   }
   ```
   Valid elements of `Vec2D` are now only those that implement the `ValidVecElement` trait.
+
+
+  ## Current Questions
+
+  - What are trait objects, what is `dyn`?
+  
+  - Wtf does `~const Index<Idx>` mean from the following trait definition for `IndexMut` in `std::ops`?
+
+    ``` rust
+    pub trait IndexMut<Idx: ?Sized>: ~const Index<Idx> {
+      fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
+      }
+    ```
   
 
