@@ -1,7 +1,7 @@
 ---
 title: Rust
 created: '2023-06-09T17:33:40.303Z'
-modified: '2023-06-09T20:42:25.960Z'
+modified: '2023-06-09T21:53:03.479Z'
 ---
 
 # Rust
@@ -45,5 +45,11 @@ modified: '2023-06-09T20:42:25.960Z'
       fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
       }
     ```
+  - When should I implement the Copy (and Clone) traits on a custom type and when should I not?
+      - If you implement them, then the ownership/burrowing model no longer applies for that type. Obviously this is good for scalar types.
+      - For custom types that allocate on the heap, you obviously _do not_ want to implement Copy. And I don't think Rust even lets you.
+      - However, what about custom types that do not allocate on heap at all; pure stack. Should I implement copy? Forget performance reasons--I'm keenly interested in whether there are any memory safety problems that can pop up if I do this.
+    
+    Currently for my Vec2D custom type, I haven't implemented the Copy/Clone traits. I wanna see if I'll actually end up needing them. If not, I think I won't implement them. Will perhaps make the code more rigid and safe, less error-prone.
   
 
