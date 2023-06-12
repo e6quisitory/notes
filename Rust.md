@@ -1,7 +1,7 @@
 ---
 title: Rust
 created: '2023-06-09T17:33:40.303Z'
-modified: '2023-06-09T21:53:03.479Z'
+modified: '2023-06-12T18:54:55.708Z'
 ---
 
 # Rust
@@ -51,5 +51,18 @@ modified: '2023-06-09T21:53:03.479Z'
       - However, what about custom types that do not allocate on heap at all; pure stack. Should I implement copy? Forget performance reasons--I'm keenly interested in whether there are any memory safety problems that can pop up if I do this.
     
     Currently for my Vec2D custom type, I haven't implemented the Copy/Clone traits. I wanna see if I'll actually end up needing them. If not, I think I won't implement them. Will perhaps make the code more rigid and safe, less error-prone.
+  
+  - Error handling (i.e. `Result`, `Ok`, `Err`)
+      - this syntax `Result<Array2<i32>, Box<dyn Error>>`
+      - this syntax `let record = result?` (what's the `?`)
+  - Iterators
+  - What is this syntax with the dots:
+    ``` rust
+    let mut rdr = ReaderBuilder::new()
+    .delimiter(b',')
+    .flexible(true)
+    .has_headers(false)  // Do not treat first row as headers
+    .from_reader(file);
+    ```
   
 
