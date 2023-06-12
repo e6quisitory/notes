@@ -1,7 +1,7 @@
 ---
 title: Rust
 created: '2023-06-09T17:33:40.303Z'
-modified: '2023-06-12T18:54:55.708Z'
+modified: '2023-06-12T19:33:09.158Z'
 ---
 
 # Rust
@@ -55,6 +55,8 @@ modified: '2023-06-12T18:54:55.708Z'
   - Error handling (i.e. `Result`, `Ok`, `Err`)
       - this syntax `Result<Array2<i32>, Box<dyn Error>>`
       - this syntax `let record = result?` (what's the `?`)
+      - `unwrap()` method
+      - `expect()` method
   - Iterators
   - What is this syntax with the dots:
     ``` rust
@@ -64,5 +66,6 @@ modified: '2023-06-12T18:54:55.708Z'
     .has_headers(false)  // Do not treat first row as headers
     .from_reader(file);
     ```
+  - Lifetimes (i.e. this syntax `'running`)
   
 
