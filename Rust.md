@@ -1,38 +1,80 @@
 ---
 title: Rust
 created: '2023-06-09T17:33:40.303Z'
-modified: '2023-06-12T19:33:09.158Z'
+modified: '2023-06-13T16:57:07.645Z'
 ---
 
 # Rust
 
-- **Repeated Trait Bound**
+## Table of Contents
+- [Repeated Trait Bound](#repeated_trait_bound)
+- [Error Handling](#error_handling)
 
-  Say you're creating a custom type and doing a lot of `impl` blocks, doing operator overloading, etc. You'll likely need to repeat a set of trait bounds a lot. Here's a way to clean up your code and assign a kinda of `typedef` or alias to the collection of trait bounds.
+<a name="repeated_trait_bound"/>
 
-  1. Define a custom trait and give it a name. For any type to implement this trait, it must _**also**_ implement the listed traits.
+## Repeated Trait Bound
+Say you're creating a custom type and doing a lot of `impl` blocks, doing operator overloading, etc. You'll likely need to repeat a set of trait bounds a lot. Here's a way to clean up your code and assign a kinda of `typedef` or alias to the collection of trait bounds.
 
-        ``` rust
-        pub trait ValidVecElement: Copy + Add<Output = Self> + Sub<Output = Self> + AddAssign + SubAssign {}
-        ```
-  2. Any type that implements `Copy`, `Add`, `Sub`, `AddAssign`, `SubAssign` _**also**_ implements `ValidVecElement`.
-       
-        ``` rust
-        impl<T: Copy + Add<Output = Self> + Sub<Output = Self> + AddAssign + SubAssign> ValidVecElement for T {}
-        ```
-  A diagram to illustrate:
+1. Define a custom trait and give it a name. For any type to implement this trait, it must _**also**_ implement the listed traits.
+
+      ``` rust
+      pub trait ValidVecElement: Copy + Add<Output = Self> + Sub<Output = Self> + AddAssign + SubAssign {}
+      ```
+2. Any type that implements `Copy`, `Add`, `Sub`, `AddAssign`, `SubAssign` _**also**_ implements `ValidVecElement`.
+      
+      ``` rust
+      impl<T: Copy + Add<Output = Self> + Sub<Output = Self> + AddAssign + SubAssign> ValidVecElement for T {}
+      ```
+A diagram to illustrate:
+
+<img src="https://github.com/e6quisitory/wolf3d-clone/assets/25702188/2fb7c69d-e3e3-4088-8386-e7db2486dced" width = 700/>
+
+Then, we can define a struct in a clean way:
+
+``` rust
+pub struct Vec2D<T: ValidVecElement> {
+  e: [T; 2]
+}
+```
+Valid elements of `Vec2D` are now only those that implement the `ValidVecElement` trait.
+
+<a name="error_handling"/>
+
+## Error Handling
+1. **`Result` Enum**
+
+    ``` rust
+    enum Result<T, E> {
+      Ok(T),
+      Err<E>
+    }
+    ```
+
+2. **`Option` Enum**
+
+    ``` rust
+    enum Option<T> {
+      Some(T),
+      None
+    }
+    ```
+
+For both of these enums, you have the following two methods
+
+  - **`unwrap()`**
+
+    Extracts `Ok` or `Some` from `Result` or `Option` enum. If enum is an `Err` or `None` variant instead, the program panics / crashes. This is meant to catch errors.
+    So, when you call `unwrap()`, you're essentially saying you expect `Ok` or `Some`, and anything else is unexpected behaviour.
   
-  <img src="https://github.com/e6quisitory/wolf3d-clone/assets/25702188/2fb7c69d-e3e3-4088-8386-e7db2486dced" width = 700/>
+  - **`expect("Error message")`**
 
-  Then, we can define a struct in a clean way:
+    Extracts `Ok` or `Some` if present. If not present (i.e. `Err` or `None` is present), program will panic / crash and the error message you passed in will be displayed.
 
-  ``` rust
-  pub struct Vec2D<T: ValidVecElement> {
-    e: [T; 2]
-  }
-  ```
-  Valid elements of `Vec2D` are now only those that implement the `ValidVecElement` trait.
+For the `Result` enum exclusively, you also have:
 
+  - **`?` operator**
+
+    Used inside functions that return a `Result` type. Used to propagate error (`Err`) early, i.e. return immediately when doing an error prone sub-calculation in the function.
 
   ## Current Questions
 
@@ -49,23 +91,9 @@ modified: '2023-06-12T19:33:09.158Z'
       - If you implement them, then the ownership/burrowing model no longer applies for that type. Obviously this is good for scalar types.
       - For custom types that allocate on the heap, you obviously _do not_ want to implement Copy. And I don't think Rust even lets you.
       - However, what about custom types that do not allocate on heap at all; pure stack. Should I implement copy? Forget performance reasons--I'm keenly interested in whether there are any memory safety problems that can pop up if I do this.
-    
-    Currently for my Vec2D custom type, I haven't implemented the Copy/Clone traits. I wanna see if I'll actually end up needing them. If not, I think I won't implement them. Will perhaps make the code more rigid and safe, less error-prone.
-  
-  - Error handling (i.e. `Result`, `Ok`, `Err`)
-      - this syntax `Result<Array2<i32>, Box<dyn Error>>`
-      - this syntax `let record = result?` (what's the `?`)
-      - `unwrap()` method
-      - `expect()` method
+
   - Iterators
-  - What is this syntax with the dots:
-    ``` rust
-    let mut rdr = ReaderBuilder::new()
-    .delimiter(b',')
-    .flexible(true)
-    .has_headers(false)  // Do not treat first row as headers
-    .from_reader(file);
-    ```
+
   - Lifetimes (i.e. this syntax `'running`)
   
 
