@@ -1,14 +1,16 @@
 ---
 title: Rust
 created: '2023-06-09T17:33:40.303Z'
-modified: '2023-06-13T16:57:07.645Z'
+modified: '2023-06-15T04:27:16.030Z'
 ---
 
 # Rust
 
 ## Table of Contents
-- [Repeated Trait Bound](#repeated_trait_bound)
-- [Error Handling](#error_handling)
+- [Repeated trait bound](#repeated_trait_bound)
+- [Error handling](#error_handling)
+- [Match Statement](#match_statement)
+- [Current questions](#current_questions)
 
 <a name="repeated_trait_bound"/>
 
@@ -76,24 +78,57 @@ For the `Result` enum exclusively, you also have:
 
     Used inside functions that return a `Result` type. Used to propagate error (`Err`) early, i.e. return immediately when doing an error prone sub-calculation in the function.
 
-  ## Current Questions
+<a name="match_statement"/>
 
-  - What are trait objects, what is `dyn`?
-  
-  - Wtf does `~const Index<Idx>` mean from the following trait definition for `IndexMut` in `std::ops`?
+## Match Statement
 
-    ``` rust
-    pub trait IndexMut<Idx: ?Sized>: ~const Index<Idx> {
-      fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
-      }
-    ```
-  - When should I implement the Copy (and Clone) traits on a custom type and when should I not?
-      - If you implement them, then the ownership/burrowing model no longer applies for that type. Obviously this is good for scalar types.
-      - For custom types that allocate on the heap, you obviously _do not_ want to implement Copy. And I don't think Rust even lets you.
-      - However, what about custom types that do not allocate on heap at all; pure stack. Should I implement copy? Forget performance reasons--I'm keenly interested in whether there are any memory safety problems that can pop up if I do this.
+Default with a `_`
+``` rust
+let number = 7;
 
-  - Iterators
+match number {
+    1 => println!("One"),
+    2 => println!("Two"),
+    _ => println!("Other") // default
+}
+```
 
-  - Lifetimes (i.e. this syntax `'running`)
+Can even have entire code blocks in there
+``` rust
+let number = 7;
+
+match number {
+    1 => {
+            let x = 1;
+            println!("{:?}", x);
+            println!("One!");
+          },
+    2 => println!("Two"),
+    _ => println!("Other")
+}
+```
+
+
+<a name="current_questions"/>
+
+## Current Questions
+
+- What are trait objects, what is `dyn`?
+
+- Wtf does `~const Index<Idx>` mean from the following trait definition for `IndexMut` in `std::ops`?
+
+  ``` rust
+  pub trait IndexMut<Idx: ?Sized>: ~const Index<Idx> {
+    fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
+    }
+  ```
+- When should I implement the Copy (and Clone) traits on a custom type and when should I not?
+    - If you implement them, then the ownership/burrowing model no longer applies for that type. Obviously this is good for scalar types.
+    - For custom types that allocate on the heap, you obviously _do not_ want to implement Copy. And I don't think Rust even lets you.
+    - However, what about custom types that do not allocate on heap at all; pure stack. Should I implement copy? Forget performance reasons--I'm keenly interested in whether there are any memory safety problems that can pop up if I do this.
+
+- Iterators
+
+- Lifetimes (i.e. this syntax `'running`)
   
 
