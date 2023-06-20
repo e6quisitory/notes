@@ -1,7 +1,7 @@
 ---
 title: Rust
 created: '2023-06-09T17:33:40.303Z'
-modified: '2023-06-15T04:27:16.030Z'
+modified: '2023-06-20T00:38:57.450Z'
 ---
 
 # Rust
@@ -112,6 +112,14 @@ match number {
 <a name="current_questions"/>
 
 ## Current Questions
+
+- In the following code, what is `impl` doing in function args? (taken from ggez lib sources)
+
+  ``` rust
+  pub fn draw(&mut self, drawable: &impl Drawable, param: impl Into<DrawParam>) {
+      drawable.draw(self, param)
+  }
+  ```
 
 - What are trait objects, what is `dyn`?
 
