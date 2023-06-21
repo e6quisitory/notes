@@ -1,7 +1,7 @@
 ---
 title: Rust
 created: '2023-06-09T17:33:40.303Z'
-modified: '2023-06-20T00:38:57.450Z'
+modified: '2023-06-21T04:44:13.626Z'
 ---
 
 # Rust
@@ -135,7 +135,7 @@ match number {
     - For custom types that allocate on the heap, you obviously _do not_ want to implement Copy. And I don't think Rust even lets you.
     - However, what about custom types that do not allocate on heap at all; pure stack. Should I implement copy? Forget performance reasons--I'm keenly interested in whether there are any memory safety problems that can pop up if I do this.
 
-- Iterators
+- SDL `event_pump.poll_iter()` returns an iterator filled with pending events. Looks like a good way to handle a stream of different events that need to be handled in different ways. So question is, wtf are iterators?
 
 - Lifetimes (i.e. this syntax `'running`)
   
