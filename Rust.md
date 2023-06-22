@@ -1,7 +1,7 @@
 ---
 title: Rust
 created: '2023-06-09T17:33:40.303Z'
-modified: '2023-06-21T04:44:13.626Z'
+modified: '2023-06-22T01:25:40.995Z'
 ---
 
 # Rust
@@ -137,6 +137,27 @@ match number {
 
 - SDL `event_pump.poll_iter()` returns an iterator filled with pending events. Looks like a good way to handle a stream of different events that need to be handled in different ways. So question is, wtf are iterators?
 
-- Lifetimes (i.e. this syntax `'running`)
+- Lifetimes
+
+  ``` rust
+  pub struct Assets<'a> {
+      pub tempTexture: Texture<'a>
+  }
+
+  impl<'a> Assets<'a> {
+      pub fn GetFirstTexture(sdlTextureCreator: &'a TextureCreator<WindowContext>) -> Self {
+          let textureSheet = Surface::load_bmp("wall_textures.bmp").unwrap();
+          let mut extractedTextureSurface = Surface::new(64, 64, PixelFormatEnum::ARGB8888).unwrap();
+          textureSheet.blit(Rect::new(0, 0, 64, 64), &mut extractedTextureSurface, Rect::new(0, 0, 64, 64));
+          let tempTexture = sdlTextureCreator.create_texture_from_surface(&extractedTextureSurface).unwrap();
+
+          Self {
+              tempTexture
+          }
+      }
+  }
+  ```
+  In the above code block, why are lifetimes needed here?
+
   
 
